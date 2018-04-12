@@ -1,4 +1,5 @@
 # Spring Security Study
+* Detail Explanation In Wiki
 
 ## 기본적인 보안 기능
 * 인증 기능 : 애플리케이션 사용자의 정당성을 확인한다.
@@ -38,18 +39,9 @@
 </tr>
 </table>
 
-## 프레임워크 아키텍쳐
-1. 클라이언트는 웹 애플리케이션에 요청을 보낸다.
-2. 스프링 시큐리티의 FilterChainProxy 클래스(서블릿 필터)가 요청을 받은 다음, HttpFirewall 인터페이스의 메소드를 호출해서 HttpServletRequest와 HttpServletResponse에 대한 방화벽 기능을 수행한다.
-3. FilterChainProxy 클래스는 SecurityFilterChain에 설정돼 있는 보안 필터 클래스에 처리를 위임한다. 이 필터는 실제로 서블릿 필터 형태로 만들어져 있다.
-4. SecurityFilterChain에는 여러 보안 필터가 연쇄적으로 연결된 형태로 설정돼 있으며, 앞의 보안 필터가 정상적으로 처리되면 뒤이은 보안 필터가 뒤이어 호출되는 방식으로 동작한다.
-5. 마지막 보안 필터의 처리가 정상적으로 종료되면 뒤이어 남은 서블릿 필터나 서블릿이 실행되어 웹 애플리케이션의 리소스에 접근할 수 있게 된다.
-6. FilterChainProxy 클래스는 웹 애플리케이션에서 반환한 리소스를 클라이언트에 전달한다.
-
-## 프레임워크에서 주요 기능을 처리하는 컴포넌트
-* FilterChainProxy
-FilterChainProxy 클래스는 프레임워크의 진입점 역할을 하는 서블릿 필터 클래스다. 이 클래스는 프레임워크에서 처리되는 전체 흐름을 제어하고 보안 기능과 같은 추가 기능을 필터에 위임하는 방식으로 동작한다
-* HttpFirewall
-HttpFirewall 인터페이스는 HttpServletRequest와 HttpServletResponse에 대한 방화벽 기능을 추가하기 위한 인터페이스다. 기본적으로 DefaultHttpFirewall 클래스가 사용되고, 디렉터리 탐색 공격이나 인가되지 않은 요청을 차단하는 역할을 한다.
-* SecurityFilterChain
-SecurityFilterChain 인터페이스는 FilterChainProxy가 받은 요청에 적용할 보안 필터 목록을 관리하기 위한 인터페이스다. 기본적으로 DefaultSecurityFilterChain 클래스가 사용되고 요청 패턴 별로 보안 필터 목록을 관리한다.
+## CSRF 방지 기능과 스프링 MVC와의 연계
+* 스프링 시큐리티에는 스프링 MVC와 연계하기 위해 만들어진 컴포넌트가 있다. 예를 들어, CsrfRequestDataValueProcessor는
+스프링 MVC의 <code>\<form:form></code> 요소를 사용할 때, HTMl 폼에 CSRF 토큰 값을 hidden 항목으로 추가하는 기능을 제공한다.
+* CSRF 방지 기능이 활성화되면 CsrfRequestDataValueProcessor가 스프링 MVC에 자동으로 적용되기 때문에
+개발자가 명시적으로 정의를 추가해줄 필요가 없다.<br/>
+HTML 폼을 만들 때 단지 <code>\<form:form></code> 요소를 사용하기만 하면 된다.
