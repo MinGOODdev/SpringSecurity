@@ -37,3 +37,26 @@
 <td>인증 정보나 인가 정보를 사용하기 위한 JSP 태그 라이브러리로 구성</td>
 </tr>
 </table>
+
+## 프레임워크 아키텍쳐
+1. 클라이언트는 웹 애플리케이션에 요청을 보낸다.
+2. 스프링 시큐리티의 FilterChainProxy 클래스(서블릿 필터)가 요청을 받은 다음, HttpFirewall 인터페이스의 메소드를<br/>
+호출해서 HttpServletRequest와 HttpServletResponse에 대한 방화벽 기능을 수행한다.
+3. FilterChainProxy 클래스는 SecurityFilterChain에 설정돼 있는 보안 필터 클래스에 처리를 위임한다.<br/>
+이 필터는 실제로 서블릿 필터 형태로 만들어져 있다.
+4. SecurityFilterChain에는 여러 보안 필터가 연쇄적으로 연결된 형태로 설정돼 있으며, 앞의 보안 필터가 정상적으로<br/>
+처리되면 뒤이은 보안 필터가 뒤이어 호출되는 방식으로 동작한다.
+5. 마지막 보안 필터의 처리가 정상적으로 종료되면 뒤이어 남은 서블릿 필터나 서블릿이 실행되어 웹 애플리케이션의<br/>
+리소스에 접근할 수 있게 된다.
+6. FilterChainProxy 클래스는 웹 애플리케이션에서 반환한 리소스를 클라이언트에 전달한다.
+
+## 프레임워크에서 주요 기능을 처리하는 컴포넌트
+* FilterChainProxy
+FilterChainProxy 클래스는 프레임워크의 진입점 역할을 하는 서블릿 필터 클래스다. 이 클래스는 프레임워크에서 처리되는<br/>
+전체 흐름을 제어하고 보안 기능과 같은 추가 기능을 필터에 위임하는 방식으로 동작한다
+* HttpFirewall
+HttpFirewall 인터페이스는 HttpServletRequest와 HttpServletResponse에 대한 방화벽 기능을 추가하기 위한 인터페이스다.<br/>
+기본적으로 DefaultHttpFirewall 클래스가 사용되고, 디렉터리 탐색 공격이나 인가되지 않은 요청을 차단하는 역할을 한다.
+* SecurityFilterChain
+SecurityFilterChain 인터페이스는 FilterChainProxy가 받은 요청에 적용할 보안 필터 목록을 관리하기 위한 인터페이스다.<br/>
+기본적으로 DefaultSecurityFilterChain 클래스가 사용되고 요청 패턴 별로 보안 필터 목록을 관리한다.
