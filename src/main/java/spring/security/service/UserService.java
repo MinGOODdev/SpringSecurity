@@ -8,7 +8,7 @@ import spring.security.utils.Encryption;
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public User login(String loginId, String password) {
         User user = userRepository.findOneByLoginId(loginId);
