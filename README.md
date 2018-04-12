@@ -45,3 +45,43 @@
 * CSRF 방지 기능이 활성화되면 CsrfRequestDataValueProcessor가 스프링 MVC에 자동으로 적용되기 때문에
 개발자가 명시적으로 정의를 추가해줄 필요가 없다.<br/>
 HTML 폼을 만들 때 단지 <code>\<form:form></code> 요소를 사용하기만 하면 된다.
+
+## 기본적으로 지원하는 보안 헤더
+<table>
+<tr>
+<td>Cache-Control(Pragma, Expires)</td>
+<td>
+콘텐츠의 캐시 방법을 지시하기 위한 헤더다.<br/>
+보호된 컨텐츠가 브라우저에 캐시되지 않게 함으로써 권한이 없는 사용자가 보호된 컨텐츠를 볼 위험을 줄일 수 있다.
+</td>
+</tr>
+<tr>
+<td>X-Frame-Options</td>
+<td>
+프레임에서 컨텐츠 표시를 인가할지 여부를 지시하기 위한 헤더다.<br/>
+프레임에서 컨텐츠가 표시되지 않게 함으로써 클릭재킹(Clickjacking)을 통한 기밀 정보 유출을 줄일 수 있다.
+</td>
+</tr>
+<tr>
+<td>X-Content-Type-Options</td>
+<td>
+컨텐츠의 종류를 결정하는 방법을 지시하기 위한 헤더다.<br/>
+일부 브라우저에서는 Content-Type 헤더의 값을 무시하고 컨텐츠 내용을 보고 결정한다.<br/>
+컨텐츠의 종류를 결정할 때 컨텐츠의 내용을 보이지 않게 함으로써 크로스 사이트 스크립팅(XSS)을 통한 공격 위험을 줄일 수 있다.
+</td>
+</tr>
+<tr>
+<td>X-XSS-Protection</td>
+<td>
+브라우저의 XSS 필터를 사용해 유해 스크립트를 검출할 방법을 지시하는 헤더다.<br/>
+XSS 필터를 활성화해서 유해 스크립트를 검출하게 만들면 크로스 사이트 스크립팅(XSS)을 통한 공격 위험을 줄일 수 있다.
+</td>
+</tr>
+<tr>
+<td>Strict-Transport-Security</td>
+<td>
+HTTPS로 접근한 후에 다시 HTTP로 접근하려 하면, HTTPS로 다시 접근하도록 지시하는 헤더다.<br/>
+HTTPS로 접근한 후 HTTP가 사용되지 않게 함으로써 중간자 공격이라는 공격 수법을 통해 악의적인 사이트로 유인되는 위험을 줄일 수 있다.
+</td>
+</tr>
+</table>
