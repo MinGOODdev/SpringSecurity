@@ -19,6 +19,7 @@ WebSecurityConfigurerAdapter
  */
 
 @EnableWebSecurity
+@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -26,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/resources/**");
+        web.ignoring().antMatchers("/res/**");
         // 보안 기능이 필요없는 리소스(*.css, *.js, *.png 등)에는 스프링 시큐리티를 적용하지 않는다.
     }
 
@@ -39,9 +40,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // /guest/** 패턴의 URL은 모든 사용자에게 허용된다.
                     .antMatchers("/guest/**").permitAll()
                     // / URL은 모든 사용자에게 허용된다.
-                    .antMatchers("/").permitAll()
+                    .antMatchers("/**").permitAll()
                     // /** 패턴의 URL은 로그인 된 사용자에게만 허용된다.
                     .antMatchers("/**").authenticated();
+
+        httpSecurity.csrf().disable();
 
         httpSecurity.formLogin()
                 .loginPage("/guest/login")                      // 로그인 페이지 설정
