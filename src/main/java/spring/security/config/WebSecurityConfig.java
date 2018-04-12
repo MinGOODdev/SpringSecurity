@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // /** 패턴의 URL은 로그인 된 사용자에게만 허용된다.
                     .antMatchers("/**").authenticated();
 
-        httpSecurity.csrf().disable();
+//        httpSecurity.csrf().disable();
 
         httpSecurity.formLogin()
                 .loginPage("/guest/login")                      // 로그인 페이지 설정
